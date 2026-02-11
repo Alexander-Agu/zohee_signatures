@@ -8,6 +8,7 @@
         public string Phone {  get; set; } = string.Empty;
         public string FileName {  get; set; } = string.Empty;
         public string Email {  get; set; } = string.Empty;
-        public bool Signed { get; set; } = false;
+        public bool IsSigned { get; set; } = false;
+        public bool IsTemplate { get; set; } = false;
     }
 }

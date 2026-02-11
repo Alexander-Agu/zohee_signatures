@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using ZoheeApi.Repository;
+using ZoheeApi.Service;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +13,8 @@ builder.Services.AddOpenApi();
 
 builder.Services.AddDbContext<ZoheeContext>(options =>
     options.UseSqlite("Data Source=zohee.db"));
+
+builder.Services.AddScoped<IDocumentService, DocumentService>();
 
 
 

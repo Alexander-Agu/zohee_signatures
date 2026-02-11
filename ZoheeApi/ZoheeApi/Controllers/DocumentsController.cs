@@ -25,6 +25,16 @@ namespace ZoheeApi.Controllers
             return Ok(new { response });
         }
 
+        [HttpPost("create-template")]
+        public async Task<IActionResult> CreateTemplate(
+            [FromForm] string documentTitle,
+            [FromForm] IFormFile file)
+        {
+
+            string response = await documentService.CreateTemplate(documentTitle, file); 
+            return Ok(new { response });
+        }
+
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
@@ -41,6 +51,15 @@ namespace ZoheeApi.Controllers
             var bytes = System.IO.File.ReadAllBytes(path);
 
             return File(bytes, "application/pdf");
+        }
+
+
+        [HttpPut("sign/{filename}")]
+        public async Task<IActionResult> SignDocument(string filename, IFormFile file)
+        {
+            var result = await documentService.SignDocumentAsync(filename, file);
+
+            return Ok(result);
         }
     }
 }

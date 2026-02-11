@@ -17,6 +17,11 @@ namespace ZoheeApi.Service
 
         public Task<List<Documents>> GetAllDocumentsAsync();
 
-        public Task<Documents> SignDocumentAsync(string filename)
+        public Task<Documents> SignDocumentAsync(string filename, IFormFile file);
+
+        public Task<string> CreateTemplate(
+                string documentTitle,
+                IFormFile file
+            );
     }
 }
