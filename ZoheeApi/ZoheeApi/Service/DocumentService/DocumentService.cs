@@ -54,18 +54,15 @@ namespace ZoheeApi.Service.DocumentService
                     Name = u.Name,
                     Email = u.Email,
                     Phone = u.Phone
-                    // Note: EF automatically handles the DocumentId link here!
                 });
             }
 
-            // 2. Save everything in ONE go
+            // Save everything in ONE go
             _context.documents.Add(doc);
             await _context.SaveChangesAsync();
 
-            // 3. Now that everything is saved and IDs exist, send the emails
             foreach (var savedUser in doc.Users)
             {
-                // We use the email service directly here
                 await emailService.SendSignatureRequestEmailAsync(
                     savedUser.Email,
                     doc.FileName,
