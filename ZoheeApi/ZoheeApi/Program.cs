@@ -1,6 +1,9 @@
+using FIN.Service.EmailServices;
 using Microsoft.EntityFrameworkCore;
 using ZoheeApi.Repository;
-using ZoheeApi.Service;
+using ZoheeApi.Service.DocumentService;
+using ZoheeApi.Service.TemplateService;
+using ZoheeApi.Service.UserService;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,6 +18,9 @@ builder.Services.AddDbContext<ZoheeContext>(options =>
     options.UseSqlite("Data Source=zohee.db"));
 
 builder.Services.AddScoped<IDocumentService, DocumentService>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<ITemplateService, TemplateService>();
+builder.Services.AddScoped<IEmailService, EmailService>();
 
 
 

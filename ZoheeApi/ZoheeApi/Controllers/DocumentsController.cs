@@ -2,8 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using ZoheeApi.Repository;
 using ZoheeApi.Entities;
-using ZoheeApi.Service;
 using System.Threading.Tasks;
+using ZoheeApi.Service.DocumentService;
+using ZoheeApi.Dtos;
 
 namespace ZoheeApi.Controllers
 {
@@ -14,24 +15,12 @@ namespace ZoheeApi.Controllers
 
         [HttpPost("upload")]
         public async Task<IActionResult> Upload(
-            [FromForm] string userName,
-            [FromForm] string phoneNumber,
-            [FromForm] string documentTitle,
-            [FromForm] string email,
-            [FromForm] IFormFile file)
-        {
-
-            string response = await documentService.SaveDocumentAsync(userName, phoneNumber, email, documentTitle, file); 
-            return Ok(new { response });
-        }
-
-        [HttpPost("create-template")]
-        public async Task<IActionResult> CreateTemplate(
+            [FromForm] string recipients,
             [FromForm] string documentTitle,
             [FromForm] IFormFile file)
         {
 
-            string response = await documentService.CreateTemplate(documentTitle, file); 
+            string response = await documentService.SaveDocumentAsync(recipients, documentTitle, file); 
             return Ok(new { response });
         }
 
@@ -54,12 +43,35 @@ namespace ZoheeApi.Controllers
         }
 
 
-        [HttpPut("sign/{filename}")]
-        public async Task<IActionResult> SignDocument(string filename, IFormFile file)
+        [HttpGet("initial-file/{fileName}")]
+        public IActionResult GetInitialFile(string fileName)
         {
-            var result = await documentService.SignDocumentAsync(filename, file);
+            var path = Path.Combine("templates", fileName);
 
-            return Ok(result);
+            var bytes = System.IO.File.ReadAllBytes(path);
+
+            return File(bytes, "application/pdf");
+        }
+
+
+        [HttpPut("sign/{email}/{documentId}/{userId}/{filename}")]
+        public async Task<IActionResult> SignDocument(
+            int userId,
+            string email,
+            int documentId,
+            string filename,
+            [FromForm] IFormFile file) // <--- Add [FromForm] here
+        {
+            try
+            {
+                var result = await documentService.SignDocumentAsync(email, documentId, userId, filename, file);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                // This will help you see the REAL error in your browser response
+                return StatusCode(500, ex.Message);
+            }
         }
     }
 }
