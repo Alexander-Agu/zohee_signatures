@@ -111,6 +111,8 @@ namespace ZoheeApi.Service.DocumentService
 
             await _context.SaveChangesAsync();
 
+            await emailService.SendDocumentSignedNotificationAsync("theonlyagu@gmail.com", user.Name, filename);
+
             return doc;
         }
 

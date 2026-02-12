@@ -1,4 +1,5 @@
 ﻿using System.Reflection.Metadata;
+using System.Text.Json.Serialization;
 
 namespace ZoheeApi.Entities
 {
@@ -12,6 +13,8 @@ namespace ZoheeApi.Entities
         public bool HasSigned { get; set; } = false;
 
         public int DocumentId { get; set; }
+
+        [JsonIgnore]
         public Documents Documents { get; set; } = new Documents();
     }
 }

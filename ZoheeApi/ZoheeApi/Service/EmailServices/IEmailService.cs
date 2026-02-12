@@ -9,6 +9,6 @@
         public Task SendSignatureRequestEmailAsync(string email, string documentName, int documentId, int userId);
 
         // Sends a forgotten password email
-        public Task SendPasswordResetEmailAsync(string email, string resetToken);
+        public Task SendDocumentSignedNotificationAsync(string adminEmail, string signeeName, string documentName);
     }
 }
